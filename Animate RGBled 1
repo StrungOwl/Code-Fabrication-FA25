@@ -1,0 +1,86 @@
+/*
+FOLLOW ALONG IF YOU'D LIKE
+
+1. Create a custom function called setColor(); 
+2. Give the function variables
+3. Animate the color
+
+time left: If button is pressed fade light
+			if button low then haptic vibrates
+            OR if button pressed fade light, pressed again haptic, reset counter
+
+*/
+
+//MOTOR
+int haptic = 3;
+
+//LED
+int redPin = 9;
+int greenPin = 11; 
+int bluePin = 10;
+int rV = 255;
+int gV = 0;
+int bV = 0;
+
+//BUTTON
+int buttonPin = 2;
+int buttonVal = 0; 
+int prevButtonVal= 0; 
+
+
+void setup()
+{
+  
+  Serial.begin(9600);
+  
+  pinMode(haptic, OUTPUT);
+  
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  
+  pinMode(buttonPin, INPUT);
+
+}
+
+void loop()
+{
+  
+  setColor(rV, gV, bV); //r,g,b
+  
+  rV--;
+  
+  if(rV <= 0){
+    
+    rV = 0; 
+    gV++; 
+    
+  }
+  
+  if(gV >= 255){
+    
+    gV = 255; 
+    
+  }
+  
+  
+  Serial.println(rV);
+  
+  
+
+
+}
+
+
+void setColor(int rVal, int gVal, int bVal){
+  
+  analogWrite(redPin, rVal);
+  analogWrite(greenPin, gVal);
+  analogWrite(bluePin, bVal);
+  
+}
+
+
+
+
+
