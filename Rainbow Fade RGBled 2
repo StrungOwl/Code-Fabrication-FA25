@@ -1,0 +1,86 @@
+//When button is pressed the LED's color fades
+//When button not pressed haptic motor supposed to vibrate 
+
+//MOTOR
+int haptic = 3;
+
+//LED
+int redPin = 9;
+int greenPin = 11; 
+int bluePin = 10;
+int r = 255;
+int g = 0;
+int b = 0; 
+int colSpeed = 1; 
+
+//BUTTON
+int buttonPin = 2;
+int buttonVal = 0; 
+int prevButtonVal= 0; 
+
+
+void setup()
+{
+  
+  Serial.begin(9600);
+  
+  pinMode(haptic, OUTPUT);
+  
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  
+  pinMode(buttonPin, INPUT);
+
+}
+
+void loop()
+{
+  buttonVal = digitalRead(buttonPin);
+  
+  if(buttonVal == HIGH){
+    
+     //GOOGLE COLOR PICKER TO FIND VISUAL REFERENCE FOR VALUES AND COPY PASTE
+  	setColor(r, g, b); //r,g,b values range from 0 - 255
+  	animateColor(); 
+    analogWrite(haptic, 0); 
+
+  
+  } else {
+    
+    setColor(0,0,0); //black or off
+    analogWrite(haptic, 255); 
+    Serial.println("Vibration Occurs");
+    
+  }
+  
+  Serial.println(buttonVal);
+  
+
+}
+
+void setColor(int redVal, int greenVal, int blueVal) {
+  
+  analogWrite(redPin, redVal);
+  analogWrite(greenPin, greenVal);
+  analogWrite(bluePin, blueVal);
+  
+}
+
+void animateColor(){
+if (r == 255 && g < 255 && b == 0) {
+  g += colSpeed;                 // red to yellow to green
+} else if (g == 255 && r > 0 && b == 0) {
+  r -= colSpeed;                 // green to cyan
+} else if (g == 255 && b < 255 && r == 0) {
+  b += colSpeed;                 // cyan to blue
+} else if (b == 255 && g > 0 && r == 0) {
+  g -= colSpeed;                 // blue to magenta
+} else if (b == 255 && r < 255 && g == 0) {
+  r += colSpeed;                 // magenta to red
+} else if (r == 255 && b > 0 && g == 0) {
+  b -= colSpeed;                 // back to red
+}
+  
+  delay(10); //change this to timer later?? 
+}
